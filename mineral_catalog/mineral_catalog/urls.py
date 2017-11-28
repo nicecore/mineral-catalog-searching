@@ -19,8 +19,8 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^minerals/', include('minerals.urls', namespace='minerals')),
-    url(r'^$', include('minerals.urls', namespace='minerals'))
+    url(r'^minerals/', include('minerals.urls', namespace="minerals")),
+    url(r'^$', include('minerals.urls', namespace="home"))
 ]
 
 urlpatterns += staticfiles_urlpatterns()

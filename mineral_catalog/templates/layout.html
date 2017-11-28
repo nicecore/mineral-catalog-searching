@@ -25,6 +25,12 @@
       </a>
       <p class="logo__text text-centered">They're not rocks!</p>
     </div>
+      <section class="top-bar-left">
+          <form action="{% url 'minerals:search' %}" method="GET">
+            <input type="search" name="q">
+            <button type="button" class="secondary small button">Search</button>
+          </form>
+      </section>
     {% block content %}{% endblock %}
   </div>
   {% block random %}
