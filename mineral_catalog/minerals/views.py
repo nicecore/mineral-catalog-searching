@@ -96,7 +96,8 @@ def mineral_detail(request, pk):
 def search(request):
     term = request.GET.get("q")
     minerals = Mineral.objects.filter(name__icontains=term)
-    return render(request, 'minerals/mineral_list.html', {'minerals': minerals})
+    random_min = random.choice(minerals)
+    return render(request, 'minerals/mineral_list.html', {'minerals': minerals, 'random': random_min})
 
 
 

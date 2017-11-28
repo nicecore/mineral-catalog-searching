@@ -28,7 +28,7 @@
       <section class="top-bar-left">
           <form action="{% url 'minerals:search' %}" method="GET">
             <input type="search" name="q">
-            <button type="button" class="secondary small button">Search</button>
+            <button type="submit" class="secondary small button">Search</button>
           </form>
       </section>
     {% block content %}{% endblock %}
