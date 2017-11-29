@@ -6,6 +6,7 @@ import json
 from django.db import IntegrityError
 
 
+
 def make_mineral_dict(mineral):
     """Make a dictionary out of a mineral object from JSON file"""
     fields = {
@@ -27,7 +28,8 @@ def make_mineral_dict(mineral):
         'optical properties': None,
         'refractive index': None,
         'crystal habit': None,
-        'specific gravity': None
+        'specific gravity': None,
+        'group': None,
     }
 
     for key, value in mineral.items():
@@ -61,7 +63,8 @@ def add_minerals_to_database():
                     optical_properties=fields['optical properties'],
                     refractive_index=fields['refractive index'],
                     crystal_habit=fields['crystal habit'],
-                    specific_gravity=fields['specific gravity']
+                    specific_gravity=fields['specific gravity'],
+                    group=fields['group']
                 ).save()
             except IntegrityError:
                 continue
@@ -83,9 +86,9 @@ def mineral_list(request):
 def mineral_detail(request, pk):
     """Return a particular mineral, plus a random mineral"""
     mineral_predict = get_object_or_404(Mineral, pk=pk)
+    mineral = model_to_dict(mineral_predict)
     minerals = Mineral.objects.all()
     random_min = random.choice(minerals)
-    mineral = model_to_dict(mineral_predict)
     return render(
         request,
         'minerals/mineral_detail.html',
@@ -96,8 +99,81 @@ def mineral_detail(request, pk):
 def search(request):
     term = request.GET.get("q")
     minerals = Mineral.objects.filter(name__icontains=term)
-    random_min = random.choice(minerals)
+    all_minerals = Mineral.objects.all()
+    random_min = random.choice(all_minerals)
     return render(request, 'minerals/mineral_list.html', {'minerals': minerals, 'random': random_min})
+
+
+def minerals_by_letter(request, letter):
+    minerals = Mineral.objects.filter(name__istartswith=letter.lower())
+    all_minerals = Mineral.objects.all()
+    random_min = random.choice(all_minerals)
+    return render(
+        request,
+        'minerals/mineral_list.html',
+        {'minerals': minerals, 'active_letter': letter, 'random': random_min})
+
+
+def minerals_by_group(request, group):
+    minerals = Mineral.objects.filter(group=group)
+    all_minerals = Mineral.objects.all()
+    random_min = random.choice(all_minerals)
+    return render(
+        request,
+        'minerals/mineral_list.html',
+        {'minerals': minerals, 'random': random_min})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
