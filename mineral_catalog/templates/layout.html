@@ -42,7 +42,7 @@
     </div>
     <div class="grid-100">
     	<h3>Search by category:</h3>
-    	<a href="{% url 'minerals:group' group='Oxides' %}">Oxides</a>
+    	{% nav_minerals_list %}
     </div>
     {% block content %}{% endblock %}
   </div>
