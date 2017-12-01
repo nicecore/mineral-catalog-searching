@@ -72,7 +72,7 @@ def add_minerals_to_database():
 
 def mineral_list(request):
     """Return all minerals, plus a random mineral"""
-    add_minerals_to_database()
+    # add_minerals_to_database()
     minerals = Mineral.objects.all()
     random_min = random.choice(minerals)
     return render(

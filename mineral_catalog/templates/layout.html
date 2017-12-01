@@ -26,10 +26,12 @@
       </a>
       <p class="logo__text text-centered">They're not rocks!</p>
     </div>
+    <div class="grid-100">
     	<form action="{% url 'minerals:search' %}" method="GET">
         <input type="search" name="q">
         <button type="submit" class="secondary small button">Search</button>
       </form>
+    </div>
     <div class="grid-100">
     	<h3>Search by first letter:</h3>
     	{% for letter in "abcdefghijklmnopqrstuvwxyz" %}
