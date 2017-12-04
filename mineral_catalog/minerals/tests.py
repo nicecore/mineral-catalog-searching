@@ -6,7 +6,7 @@ from .models import Mineral
 
 
 mineral_one = {
-    "name": "Adamite",
+    "name": "Madamite",
     "image_filename": "240px-Adamite-179841.jpg",
     "image_caption": "Yellow-green adamite in limonite",
     "category": "Arsenate",
@@ -26,7 +26,7 @@ mineral_one = {
 }
 
 mineral_two = {
-    "name": "Aegirine",
+    "name": "Blageirne",
     "image_filename": "250px-8336M-aegirine.jpg",
     "image_caption": "Monoclinic crystal of aegirine with orthoclase, from Mount Malosa, Zomba District, Malawi (size: 85 mm x 83 mm; 235 g)",
     "category": "Silicate, Pyroxene",
@@ -54,99 +54,48 @@ class MineralViewsTests(TestCase):
         self.mineral_one = Mineral.objects.create(**mineral_one)
         self.mineral_two = Mineral.objects.create(**mineral_two)
 
-    # def test_mineral_list_view(self):
-    #     resp = self.client.get(reverse('minerals:list'))
-    #     self.assertEqual(resp.status_code, 200)
-    #     self.assertIn(self.mineral_one, resp.context['minerals'])
-    #     self.assertTemplateUsed(resp, 'minerals/mineral_list.html')
-    #     self.assertContains(resp, self.mineral_one.name)
+    def test_mineral_list_view(self):
+        resp = self.client.get(reverse('minerals:list'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn(self.mineral_one, resp.context['minerals'])
+        self.assertTemplateUsed(resp, 'minerals/mineral_list.html')
+        self.assertContains(resp, self.mineral_one.name)
 
-    # def test_mineral_detail_view(self):
-    #     resp = self.client.get(reverse(
-    #         'minerals:detail',
-    #         kwargs={'pk': self.mineral_two.pk}
-    #     ))
-    #     self.assertEqual(resp.status_code, 200)
-    #     self.assertIn(self.mineral_two.name, resp.context['mineral'].values())
+    def test_mineral_detail_view(self):
+        resp = self.client.get(reverse(
+            'minerals:detail',
+            kwargs={'pk': self.mineral_two.pk}
+        ))
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn(self.mineral_two.name, resp.context['mineral'].values())
+        self.assertTemplateUsed(resp, 'minerals/mineral_detail.html')
 
-    # def test_mineral_list_sort_by_group(self):
-    #     resp = self.client.get(reverse(
-    #         'minerals:group',
-    #         kwargs={'group': 'Arsenates'}
-    #     ))
-    #     self.assertEqual(resp.status_code, 200)
-    #     self.assertIn(self.mineral_one, resp.context['minerals'])
-    #     self.assertNotIn(self.mineral_two, resp.context['minerals'])
+    def test_mineral_list_sort_by_group(self):
+        resp = self.client.get(reverse(
+            'minerals:group',
+            kwargs={'group': 'Arsenates'}
+        ))
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn(self.mineral_one, resp.context['minerals'])
+        self.assertNotIn(self.mineral_two, resp.context['minerals'])
+        self.assertTemplateUsed(resp, 'minerals/mineral_list.html')
 
-    # def test_search_by_term(self):
-    #     resp = self.client.get(reverse('minerals:search'), {'q': 'adamite'})
-    #     resp2 = self.client.get(reverse('minerals:search'), {'q': 'aegirine'})
-    #     self.assertEqual(resp.status_code, 200)
-    #     self.assertIn(self.mineral_one, resp.context['minerals'])
-    #     self.assertTemplateUsed(resp, 'minerals/mineral_list.html')
+    def test_search_by_term(self):
+        resp = self.client.get(reverse('minerals:search'), {'q': 'madamite'})
+        resp2 = self.client.get(reverse('minerals:search'), {'q': 'blageirne'})
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn(self.mineral_one, resp.context['minerals'])
+        self.assertTemplateUsed(resp, 'minerals/mineral_list.html')
 
     def test_search_by_letter(self):
-        resp = self.client.get(reverse('minerals:letter'), kwargs={'letter': 'a'})
+        resp = self.client.get(
+            reverse('minerals:letter', kwargs={'letter': 'm'}))
         self.assertEqual(resp.status_code, 200)
+        self.assertIn(self.mineral_one, resp.context['minerals'])
+        self.assertTemplateUsed(resp, 'minerals/mineral_list.html')
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+class MineralModelTest(TestCase):
+    def test_mineral_creation(self):
+        mineral = Mineral.objects.create(**mineral_one)
+        self.assertEqual(mineral.name, 'Madamite')
